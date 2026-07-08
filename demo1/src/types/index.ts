@@ -47,7 +47,11 @@ export interface EmpExpr {
   job: string
 }
 
-/** 员工分页查询参数，对应后端 EmpPageListParams.java */
+/** 部门分页查询参数 */
+export interface DeptPageParams {
+  page: number
+  pageSize: number
+}
 export interface EmpPageParams {
   page: number
   pageSize: number

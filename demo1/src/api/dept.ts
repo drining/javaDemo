@@ -1,9 +1,14 @@
 import { get, post, del } from '../utils/request'
-import type { ApiResult, Dept } from '../types'
+import type { ApiResult, Dept, PageResult, DeptPageParams } from '../types'
 
 /** 获取所有部门列表 GET /depts */
 export function getDeptList(): Promise<ApiResult<Dept[]>> {
   return get<Dept[]>('/depts')
+}
+
+/** 分页查询部门列表 GET /depts/pageList */
+export function getDeptPageList(params: DeptPageParams): Promise<PageResult<Dept>> {
+  return get<PageResult<Dept>>('/depts/pageList', params as any).then(res => res.data)
 }
 
 /** 根据ID查询部门详情 GET /depts/{id} */

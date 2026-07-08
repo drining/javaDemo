@@ -19,6 +19,20 @@
       </el-table-column>
     </el-table>
 
+    <!-- 分页 -->
+    <div class="pagination-wrapper">
+      <el-pagination
+        v-model:current-page="currentPage"
+        v-model:page-size="pageSize"
+        :page-sizes="[5, 10, 20, 50]"
+        :total="total"
+        :disabled="loading"
+        layout="total, sizes, prev, pager, next, jumper"
+        @current-change="loadDeptList"
+        @size-change="onSizeChange"
+      />
+    </div>
+
     <!-- 新增/编辑弹窗 -->
     <el-dialog
       v-model="dialogVisible"
@@ -49,11 +63,14 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormInstance, FormRules } from 'element-plus'
-import { getDeptList, deleteDept, addDept, updateDept } from '../api/dept'
+import { getDeptPageList, deleteDept, addDept, updateDept } from '../api/dept'
 import type { Dept } from '../types'
 
 /* ---------- 数据 ---------- */
 const deptList = ref<Dept[]>([])
+const total = ref(0)
+const currentPage = ref(1)
+const pageSize = ref(10)
 const loading = ref(false)
 
 /* ---------- 弹窗 ---------- */
@@ -78,17 +95,22 @@ const formRules: FormRules = {
 
 /* ---------- 方法 ---------- */
 
-/** 加载部门列表 */
+/** 加载部门列表（分页） */
 async function loadDeptList() {
   loading.value = true
   try {
-    const res = await getDeptList()
-    if (res.code === 1) {
-      deptList.value = res.data
-    }
+    const res = await getDeptPageList({ page: currentPage.value, pageSize: pageSize.value })
+    deptList.value = res.rows
+    total.value = res.total
   } finally {
     loading.value = false
   }
+}
+
+/** 每页条数改变时，回到第一页重新查询 */
+function onSizeChange() {
+  currentPage.value = 1
+  loadDeptList()
 }
 
 /** 打开新增弹窗 */
@@ -174,5 +196,11 @@ onMounted(() => {
   margin: 0;
   font-size: 22px;
   color: #1a1a2e;
+}
+
+.pagination-wrapper {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
 }
 </style>
