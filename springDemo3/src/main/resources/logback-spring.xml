@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Logback 主配置文件（Spring Boot 会优先识别 logback-spring.xml）
+  scan=true: 开启自动扫描配置变更（开发阶段方便，生产可按需关闭）
+  scanPeriod: 扫描间隔
+-->
+<configuration scan="true" scanPeriod="60 seconds">
+    <!-- 日志目录 -->
+    <property name="LOG_HOME" value="logs"/>
+    <!-- 应用名，用于拼接日志文件名 -->
+    <property name="APP_NAME" value="springDemo3"/>
+    <!-- 控制台日志格式 -->
+    <property name="CONSOLE_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+    <!-- 文件日志格式 -->
+    <property name="FILE_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+
+    <!-- 控制台输出器：日志打印到终端 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_PATTERN}</pattern>
+            <!-- 控制台编码，避免中文乱码 -->
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 文件输出器：日志写入文件并按时间+大小滚动 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 当前活跃日志文件 -->
+        <file>${LOG_HOME}/${APP_NAME}.log</file>
+        <!-- 滚动策略：按天切分，同时单文件超 20MB 时分片 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 历史日志命名规则：日期 + 序号 -->
+            <fileNamePattern>${LOG_HOME}/${APP_NAME}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- 单个日志文件最大大小 -->
+
+            <maxFileSize>20MB</maxFileSize>
+            <!-- 保留最近 30 天日志 -->
+            <maxHistory>30</maxHistory>
+            <!-- 历史日志总上限，超过会清理更旧文件 -->
+            <totalSizeCap>2GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${FILE_PATTERN}</pattern>
+            <!-- 文件编码，避免中文乱码 -->
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 指定业务包日志级别；未指定的包走 root 级别 -->
+    <logger name="org.example.springdemo3" level="INFO"/>
+
+    <!-- 根日志器：所有日志最终都会汇聚到这里 -->
+    <root level="INFO">
+        <!-- 同时输出到控制台 -->
+        <appender-ref ref="CONSOLE"/>
+        <!-- 同时输出到文件 -->
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>

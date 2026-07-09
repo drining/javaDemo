@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: springDemo3
+  datasource:
+    url: jdbc:mysql://localhost:32768/demo3
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 123456
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+
+springdoc:
+  packages-to-scan: org.example.springdemo3.controller
+  paths-to-match: /depts/**, /emps/**
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    try-it-out-enabled: true
+    operations-sorter: alpha
+    tags-sorter: alpha
