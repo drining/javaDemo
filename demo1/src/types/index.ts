@@ -41,8 +41,8 @@ export interface Emp {
 export interface EmpExpr {
   id: number
   empId: number
-  begin: string
-  end: string
+  beginDate: string
+  endDate: string
   company: string
   job: string
 }

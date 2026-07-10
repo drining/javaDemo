@@ -3,6 +3,7 @@ package org.example.springdemo3.mapper;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
 import org.example.springdemo3.pojo.Emp;
 import org.example.springdemo3.pojo.EmpPageListParams;
 import org.example.springdemo3.pojo.EmpPageVO;
@@ -24,4 +25,6 @@ public interface EmpMapper {
     @Insert("insert into emp_expr(emp_id, begin_date, end_date, company, job) " +
             "values(#{empId}, #{beginDate}, #{endDate}, #{company}, #{job})")
     void addEmpExpr(Emp.EmpExpr expr);
+
+    void addEmpExprBatch(@Param("list") List<Emp.EmpExpr> list);
 }

@@ -70,6 +70,14 @@
         limit #{offset}, #{size}
     </select>
 
+    <insert id="addEmpExprBatch">
+        insert into emp_expr(emp_id, begin_date, end_date, company, job)
+        values
+        <foreach collection="list" item="expr" separator=",">
+            (#{expr.empId}, #{expr.beginDate}, #{expr.endDate}, #{expr.company}, #{expr.job})
+        </foreach>
+    </insert>
+
     <!-- <select id="findByIdWithExpr"
             parameterType="java.lang.Integer"
             resultMap="empWithExprResultMap">
