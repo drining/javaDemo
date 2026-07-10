@@ -18,30 +18,60 @@ public class EmpServiceImpl implements EmpService {
     @Autowired
     private EmpMapper empMapper;
 
-    @Transactional(readOnly = true)
-    public List<EmpPageVO> findEmpsByPageList(EmpPageListParams getEmpPageListParams) {
-
-        List<EmpPageVO> empList = empMapper.getEmpListByPage(getEmpPageListParams);
-        return empList;
+    @Override
+    public List<EmpPageVO> findEmpsByPageList(EmpPageListParams params) {
+        return empMapper.getEmpListByPage(params);
     }
 
-    @Transactional(readOnly = true)
-    public Integer getCount(EmpPageListParams getEmpPageListParams) {
-        return empMapper.getCount(getEmpPageListParams);
+    @Override
+    public Integer getCount(EmpPageListParams params) {
+        return empMapper.getCount(params);
     }
 
-    @Transactional
+    @Override
     public void addEmp(Emp emp) {
-        // 设置创建/更新时间
         emp.setCreateTime(LocalDateTime.now());
         emp.setUpdateTime(LocalDateTime.now());
-        // 插入员工主表（自增 ID 回写到 emp.id）
         empMapper.addEmp(emp);
-        // 批量插入工作经历
+
         List<Emp.EmpExpr> exprList = emp.getExprList();
         if (exprList != null && !exprList.isEmpty()) {
             exprList.forEach(expr -> expr.setEmpId(emp.getId()));
             empMapper.addEmpExprBatch(exprList);
         }
+    }
+
+    @Override
+    public Emp findById(Integer id) {
+        Emp emp = empMapper.findById(id);
+        if (emp != null) {
+            List<Emp.EmpExpr> exprList = empMapper.findExprByEmpId(id);
+            emp.setExprList(exprList);
+        }
+        return emp;
+    }
+
+    @Override
+    public void updateEmp(Emp emp) {
+        emp.setUpdateTime(LocalDateTime.now());
+        // 更新员工基本信息
+        empMapper.updateEmp(emp);
+
+        // 先删除旧的工作经历，再插入新的
+        empMapper.deleteExprByEmpId(emp.getId());
+        List<Emp.EmpExpr> exprList = emp.getExprList();
+        if (exprList != null && !exprList.isEmpty()) {
+            for (Emp.EmpExpr expr : exprList) {
+                expr.setEmpId(emp.getId());
+                empMapper.addEmpExpr(expr);
+            }
+        }
+    }
+
+    @Override
+    public void deleteEmp(Integer id) {
+        // emp_expr 有 ON DELETE CASCADE，但显式删除更安全
+        empMapper.deleteExprByEmpId(id);
+        empMapper.deleteEmp(id);
     }
 }

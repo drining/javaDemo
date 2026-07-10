@@ -54,7 +54,7 @@ export function get<T>(url: string, params?: Record<string, any>): Promise<ApiRe
 }
 
 /**
- * POST 请求
+ * POST 请求（JSON）
  * @param url 请求地址
  * @param data 请求体
  * @returns 响应数据中的 data 字段
@@ -71,6 +71,20 @@ export function post<T>(url: string, data?: any): Promise<ApiResult<T>> {
  */
 export function del<T>(url: string, params?: Record<string, any>): Promise<ApiResult<T>> {
   return request.delete(url, { params }).then((res) => res.data)
+}
+
+/**
+ * 上传文件（multipart/form-data）
+ * @param url 请求地址
+ * @param file 文件对象
+ * @returns 响应数据中的 data 字段
+ */
+export function upload<T>(url: string, file: File): Promise<ApiResult<T>> {
+  const formData = new FormData()
+  formData.append('file', file)
+  return request.post(url, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  }).then((res) => res.data)
 }
 
 export default request

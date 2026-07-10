@@ -6,6 +6,16 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 123456
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+cos:
+  secret-id: ${COS_SECRET_ID:}
+  secret-key: ${COS_SECRET_KEY:}
+  region: ap-guangzhou
+  bucket: oss-1310209398
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
