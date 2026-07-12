@@ -27,6 +27,9 @@ public interface EmpMapper {
             "values(#{empId}, #{beginDate}, #{endDate}, #{company}, #{job})")
     void addEmpExpr(Emp.EmpExpr expr);
 
+    // 批量插入工作经历 — XML 映射见 EmpMapper.xml
+    void addEmpExprBatch(List<Emp.EmpExpr> exprList);
+
     // ========== 详情 ==========
 
     @Select("select * from emp where id = #{id}")
