@@ -3,6 +3,7 @@
     <div class="sidebar-header">
       <h2>后台管理系统</h2>
     </div>
+
     <nav class="sidebar-nav">
       <router-link to="/dept" class="nav-item" active-class="active">
         <span class="nav-icon">📁</span>
@@ -13,11 +14,38 @@
         <span class="nav-text">员工管理</span>
       </router-link>
     </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <span class="user-name">{{ userName }}</span>
+      </div>
+      <el-button size="small" plain class="logout-btn" @click="handleLogout">
+        退出登录
+      </el-button>
+    </div>
   </aside>
 </template>
 
 <script setup lang="ts">
-// Sidebar component
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { ElMessageBox } from 'element-plus'
+
+const router = useRouter()
+const userName = ref(localStorage.getItem('name') || localStorage.getItem('username') || '用户')
+
+function handleLogout() {
+  ElMessageBox.confirm('确认退出登录吗？', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'info'
+  }).then(() => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('username')
+    localStorage.removeItem('name')
+    router.push('/login')
+  }).catch(() => {})
+}
 </script>
 
 <style scoped>
@@ -81,5 +109,26 @@
 
 .nav-text {
   line-height: 1;
+}
+
+.sidebar-footer {
+  padding: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.user-info {
+  text-align: center;
+}
+
+.user-name {
+  font-size: 14px;
+  color: #a0a3b1;
+}
+
+.logout-btn {
+  width: 100%;
 }
 </style>

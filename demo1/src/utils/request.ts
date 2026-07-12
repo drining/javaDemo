@@ -14,11 +14,11 @@ const request: AxiosInstance = axios.create({
 // 请求拦截器
 request.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    // 可以在请求头中添加 token 等认证信息
-    // const token = localStorage.getItem('token')
-    // if (token) {
-    //   config.headers.Authorization = `Bearer ${token}`
-    // }
+    // 从 localStorage 获取 token 并注入请求头
+    const token = localStorage.getItem('token')
+    if (token) {
+      config.headers.Authorization = token
+    }
     return config
   },
   (error) => {
@@ -32,6 +32,11 @@ request.interceptors.response.use(
     const res = response.data
     // 后端约定 code 为 1 表示成功，0 表示失败
     if (res.code !== 1) {
+      // 401：未登录/token 过期，跳回登录页
+      if (response.status === 401) {
+        localStorage.removeItem('token')
+        window.location.hash = '#/login'
+      }
       console.error('请求失败:', res.msg)
       return Promise.reject(new Error(res.msg || '请求失败'))
     }

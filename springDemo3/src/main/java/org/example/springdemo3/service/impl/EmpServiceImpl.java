@@ -7,6 +7,7 @@ import org.example.springdemo3.pojo.EmpPageVO;
 import org.example.springdemo3.service.EmpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,6 +29,7 @@ public class EmpServiceImpl implements EmpService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void addEmp(Emp emp) {
         emp.setCreateTime(LocalDateTime.now());
         emp.setUpdateTime(LocalDateTime.now());
@@ -53,6 +55,7 @@ public class EmpServiceImpl implements EmpService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateEmp(Emp emp) {
         emp.setUpdateTime(LocalDateTime.now());
         // 更新员工基本信息
@@ -70,6 +73,7 @@ public class EmpServiceImpl implements EmpService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteEmp(Integer id) {
         // emp_expr 有 ON DELETE CASCADE，但显式删除更安全
         empMapper.deleteExprByEmpId(id);

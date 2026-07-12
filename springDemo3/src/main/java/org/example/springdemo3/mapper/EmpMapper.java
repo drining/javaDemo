@@ -60,4 +60,10 @@ public interface EmpMapper {
 
     @Delete("delete from emp where id = #{id}")
     void deleteEmp(Integer id);
+
+    // ========== 登录 ==========
+
+    @Select("select * from emp where username = #{username}")
+    @ResultMap("empMap")
+    Emp findByUsername(String username);
 }
