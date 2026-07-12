@@ -37,10 +37,8 @@ public class EmpServiceImpl implements EmpService {
 
         List<Emp.EmpExpr> exprList = emp.getExprList();
         if (exprList != null && !exprList.isEmpty()) {
-            for (Emp.EmpExpr expr : exprList) {
-                expr.setEmpId(emp.getId());
-                empMapper.addEmpExpr(expr);
-            }
+            exprList.forEach(expr -> expr.setEmpId(emp.getId()));
+            empMapper.addEmpExprBatch(exprList);
         }
     }
 
