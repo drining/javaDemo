@@ -18,6 +18,22 @@
       "username": "root",
       "password": "123456",
       "connectionTimeout": 5000
+    },
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",
+        "enableSsl": "Disabled"
+      },
+      "ssh": "Disabled",
+      "previewLimit": 50,
+      "server": "120.24.146.158",
+      "port": 3306,
+      "driver": "MySQL",
+      "name": "mysqlDemo",
+      "database": "demo3",
+      "username": "root",
+      "password": "123456"
     }
-  ]
+  ],
+  "java.configuration.updateBuildConfiguration": "interactive"
 }

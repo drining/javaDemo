@@ -1,0 +1,20 @@
+排查结果
+=======
+1. MySQL 连接成功 ✓
+2. root 用户受限，没有 CREATE DATABASE / TABLE 权限 ✗
+3. 数据库 demo3 不存在，且无法通过 SQL 创建 ✗
+4. 已有数据库: RECOVER_YOUR_DATA, information_schema, mysql, performance_schema, sys
+
+解决方案
+=======
+方案 A：在腾讯云控制台创建 demo3 数据库（推荐）
+  1. 登录腾讯云控制台 → 云数据库 MySQL
+  2. 找到实例 120.24.146.158
+  3. 在「数据库管理」→「数据库列表」中创建 demo3
+  4. 字符集选 utf8mb4
+  5. 创建后用本脚本执行建表和数据：node demo1/init-db.cjs
+
+方案 B：使用本地 MySQL
+  1. 本地装 MySQL，建 demo3 库
+  2. 把 application.yml 的数据库地址改为 localhost
+  3. 执行本脚本：node demo1/init-db.cjs

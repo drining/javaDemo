@@ -20,8 +20,6 @@
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>${CONSOLE_PATTERN}</pattern>
-            <!-- 控制台编码，避免中文乱码 -->
-            <charset>UTF-8</charset>
         </encoder>
     </appender>
 

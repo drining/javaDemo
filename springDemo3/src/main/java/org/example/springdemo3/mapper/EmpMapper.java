@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.*;
 import org.example.springdemo3.pojo.Emp;
 import org.example.springdemo3.pojo.EmpPageListParams;
 import org.example.springdemo3.pojo.EmpPageVO;
+import org.example.springdemo3.pojo.ReportVO;
 
 import java.util.List;
 
@@ -63,6 +64,14 @@ public interface EmpMapper {
 
     @Delete("delete from emp where id = #{id}")
     void deleteEmp(Integer id);
+
+    // ========== 统计 ==========
+
+    @Select("SELECT CASE WHEN gender = 1 THEN '男' ELSE '女' END AS name, COUNT(*) AS value FROM emp GROUP BY gender ORDER BY gender")
+    List<ReportVO> countByGender();
+
+    @Select("SELECT CASE WHEN job = 1 THEN '主任' WHEN job = 2 THEN '主管' WHEN job = 3 THEN '员工' ELSE '其他' END AS name, COUNT(*) AS value FROM emp GROUP BY job ORDER BY job")
+    List<ReportVO> countByJob();
 
     // ========== 登录 ==========
 

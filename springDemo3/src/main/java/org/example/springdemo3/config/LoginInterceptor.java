@@ -1,9 +1,11 @@
 package org.example.springdemo3.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.example.springdemo3.pojo.Result;
 import org.example.springdemo3.utils.JwtUtils;
 import org.example.springdemo3.utils.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,14 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Autowired
     private RedisService redisService;
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    private void writeUnauthorized(HttpServletResponse response, String msg) throws Exception {
+        response.setStatus(401);
+        response.setContentType("application/json;charset=utf-8");
+        response.getWriter().write(objectMapper.writeValueAsString(Result.unauthorized(msg)));
+    }
+
     @Override
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response,
@@ -34,9 +44,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         Claims claims = JwtUtils.parseToken(token);
         if (claims == null) {
             log.warn("JWT 无效或已过期: {}", token);
-            response.setStatus(401);
-            response.setContentType("application/json;charset=utf-8");
-            response.getWriter().write("{\"code\":0,\"msg\":\"未登录或 token 已过期\",\"data\":null}");
+            writeUnauthorized(response, "未登录或 token 已过期");
             return false;
         }
 
@@ -48,14 +56,12 @@ public class LoginInterceptor implements HandlerInterceptor {
             String storedToken = redisService.getToken(username);
             String msg;
             if (storedToken == null) {
-                msg = "token 已过期或已被踢下线";
+                msg = "token已过期";
             } else {
-                msg = "账号已在其他地方登录，您已被踢下线";
+                msg = "账号已在其他地方登录";
             }
             log.warn("Redis token 校验失败: username={}, msg={}", username, msg);
-            response.setStatus(401);
-            response.setContentType("application/json;charset=utf-8");
-            response.getWriter().write("{\"code\":0,\"msg\":\"" + msg + "\",\"data\":null}");
+            writeUnauthorized(response, msg);
             return false;
         }
 

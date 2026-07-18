@@ -1,6 +1,8 @@
 import axios from 'axios'
 import type { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import type { ApiResult } from '../types'
+import { ElMessage } from 'element-plus'
+import router from '../router'
 
 // 创建 axios 实例
 const request: AxiosInstance = axios.create({
@@ -30,20 +32,24 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   (response: AxiosResponse<ApiResult>) => {
     const res = response.data
-    // 后端约定 code 为 1 表示成功，0 表示失败
+    // 后端约定 code 为 1 表示成功，其他表示失败
     if (res.code !== 1) {
-      // 401：未登录/token 过期，跳回登录页
-      if (response.status === 401) {
-        localStorage.removeItem('token')
-        window.location.hash = '#/login'
-      }
       console.error('请求失败:', res.msg)
       return Promise.reject(new Error(res.msg || '请求失败'))
     }
     return response
   },
   (error) => {
-    console.error('网络错误:', error.message)
+    if (error.response?.status === 401) {
+      // 未登录/token 过期，清除登录信息并跳转登录页
+      localStorage.removeItem('token')
+      localStorage.removeItem('username')
+      localStorage.removeItem('name')
+      router.push('/login')
+      ElMessage.error(error.response.data?.msg || '登录已过期，请重新登录')
+    } else {
+      console.error('网络错误:', error.message)
+    }
     return Promise.reject(error)
   }
 )

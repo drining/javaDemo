@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import LoginView from '../views/LoginView.vue'
 import DeptView from '../views/DeptView.vue'
 import EmpView from '../views/EmpView.vue'
+import ReportView from '../views/ReportView.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -27,6 +28,12 @@ const router = createRouter({
       name: 'Emp',
       component: EmpView,
       meta: { title: '员工管理', requiresAuth: true }
+    },
+    {
+      path: '/report',
+      name: 'Report',
+      component: ReportView,
+      meta: { title: '数据统计', requiresAuth: true }
     }
   ]
 })

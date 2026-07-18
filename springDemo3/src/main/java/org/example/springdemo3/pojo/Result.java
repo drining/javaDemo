@@ -23,4 +23,11 @@ public class Result<T> {
     public static <T> Result<T> error(String msg) {
         return new Result<T>(0, msg, null);
     }
+
+    /** 401：未登录或 token 过期 */
+    public static final Integer CODE_UNAUTHORIZED = 401;
+
+    public static <T> Result<T> unauthorized(String msg) {
+        return new Result<T>(CODE_UNAUTHORIZED, msg, null);
+    }
 }

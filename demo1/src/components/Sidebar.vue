@@ -13,6 +13,10 @@
         <span class="nav-icon">👤</span>
         <span class="nav-text">员工管理</span>
       </router-link>
+      <router-link to="/report" class="nav-item" active-class="active">
+        <span class="nav-icon">📊</span>
+        <span class="nav-text">数据统计</span>
+      </router-link>
     </nav>
 
     <div class="sidebar-footer">
