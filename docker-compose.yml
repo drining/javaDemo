@@ -1,0 +1,62 @@
+version: "3.8"
+
+services:
+  # ============ 后端 Spring Boot ============
+  backend:
+    build:
+      context: ./springDemo3
+      dockerfile: Dockerfile
+    image: springdemo3:latest
+    container_name: springdemo3
+    restart: unless-stopped
+    ports:
+      - "9002:9002"
+    environment:
+      - TZ=Asia/Shanghai
+
+      # ───────────────────────────────────────────
+      # 数据库/Redis 配置覆盖（docker-compose 中覆盖 application.yml）
+      # ───────────────────────────────────────────
+      # 如果你已经将 MySQL/Redis 容器加入了 app-net 网络，
+      # 用容器名连接（内部网络，更快更安全）：
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/demo3?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=123456
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
+      - SPRING_DATA_REDIS_PASSWORD=123456
+      #
+      # 如果你的 MySQL/Redis 没加入 app-net，就用公网 IP（保持 application.yml 原样即可）：
+      # - SPRING_DATASOURCE_URL=jdbc:mysql://120.24.146.158:3306/demo3?createDatabaseIfNotExist=true
+      # - SPRING_DATASOURCE_USERNAME=root
+      # - SPRING_DATASOURCE_PASSWORD=123456
+      # - SPRING_DATA_REDIS_HOST=120.24.146.158
+      # - SPRING_DATA_REDIS_PORT=6379
+      # - SPRING_DATA_REDIS_PASSWORD=123456
+    networks:
+      - app-net
+
+  # ============ 前端 Vue + Nginx ============
+  frontend:
+    build:
+      context: ./demo1
+      dockerfile: Dockerfile
+    image: demo1-frontend:latest
+    container_name: demo1-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      # 如果 80 已被占用，可改为其他端口，如 8080:80
+    depends_on:
+      - backend
+    environment:
+      - TZ=Asia/Shanghai
+    networks:
+      - app-net
+
+# ═══════════════════════════════════════════════
+# 共享网络（后端通过容器名连接 MySQL/Redis）
+# ═══════════════════════════════════════════════
+networks:
+  app-net:
+    external: true      # 使用已存在的网络：docker network create app-net

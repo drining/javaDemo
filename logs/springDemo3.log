@@ -1044,3 +1044,48 @@ Caused by: java.sql.SQLSyntaxErrorException: UPDATE command denied to user 'root
 2026-07-18 18:00:14.455 [http-nio-9002-exec-6] INFO  o.e.s.controller.DeptController - Request success: list departments, count=10
 2026-07-18 18:00:14.456 [http-nio-9002-exec-6] INFO  o.e.springdemo3.aspect.LogAspect - 执行耗时: 16ms
 2026-07-18 18:00:14.456 [http-nio-9002-exec-6] INFO  o.e.springdemo3.aspect.LogAspect - === 【操作日志】DeptController.list() 结束 ===
+2026-07-18 21:31:16.227 [lettuce-nioEventLoop-4-1] INFO  i.l.core.protocol.CommandHandler - null Unexpected exception during request: java.net.SocketException: Connection reset
+java.net.SocketException: Connection reset
+	at java.base/sun.nio.ch.SocketChannelImpl.throwConnectionReset(SocketChannelImpl.java:394)
+	at java.base/sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:426)
+	at io.netty.buffer.AdaptivePoolingAllocator$AdaptiveByteBuf.setBytes(AdaptivePoolingAllocator.java:2002)
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1139)
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:350)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:161)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.handle(AbstractNioChannel.java:445)
+	at io.netty.channel.nio.NioIoHandler$DefaultNioRegistration.handle(NioIoHandler.java:388)
+	at io.netty.channel.nio.NioIoHandler.processSelectedKey(NioIoHandler.java:596)
+	at io.netty.channel.nio.NioIoHandler.processSelectedKeysOptimized(NioIoHandler.java:571)
+	at io.netty.channel.nio.NioIoHandler.processSelectedKeys(NioIoHandler.java:512)
+	at io.netty.channel.nio.NioIoHandler.run(NioIoHandler.java:484)
+	at io.netty.channel.SingleThreadIoEventLoop.runIo(SingleThreadIoEventLoop.java:225)
+	at io.netty.channel.SingleThreadIoEventLoop.run(SingleThreadIoEventLoop.java:196)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$5.run(SingleThreadEventExecutor.java:1195)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2026-07-18 21:31:16.290 [lettuce-eventExecutorLoop-1-1] INFO  i.l.core.protocol.ConnectionWatchdog - Reconnecting, last destination was /120.24.146.158:6379
+2026-07-18 21:31:18.259 [lettuce-nioEventLoop-4-2] INFO  i.l.c.protocol.ReconnectionHandler - Reconnected to 120.24.146.158/<unresolved>:6379
+2026-07-18 21:31:23.992 [http-nio-9002-exec-7] INFO  o.e.s.config.LoginInterceptor - token 校验通过: username=zhangs
+2026-07-18 21:31:23.993 [http-nio-9002-exec-7] INFO  o.e.springdemo3.aspect.LogAspect - === 【操作日志】EmpController.getEmpPageList() 开始 ===
+2026-07-18 21:31:23.993 [http-nio-9002-exec-7] INFO  o.e.springdemo3.aspect.LogAspect - 请求参数: [EmpPageListParams(name=null, gender=null, beginDate=null, endDate=null)]
+2026-07-18 21:31:24.002 [http-nio-9002-exec-7] WARN  com.zaxxer.hikari.pool.PoolBase - HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@7e8c58fd (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2026-07-18 21:31:24.005 [http-nio-9002-exec-7] WARN  com.zaxxer.hikari.pool.PoolBase - HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@471e30fa (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2026-07-18 21:31:24.007 [http-nio-9002-exec-7] WARN  com.zaxxer.hikari.pool.PoolBase - HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@3740bf7b (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2026-07-18 21:31:24.008 [http-nio-9002-exec-7] WARN  com.zaxxer.hikari.pool.PoolBase - HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@1eba2a31 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2026-07-18 21:31:24.008 [http-nio-9002-exec-7] WARN  com.zaxxer.hikari.pool.PoolBase - HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@35c43337 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2026-07-18 21:31:24.010 [http-nio-9002-exec-7] WARN  com.zaxxer.hikari.pool.PoolBase - HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@36b4c95 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2026-07-18 21:31:24.011 [http-nio-9002-exec-7] WARN  com.zaxxer.hikari.pool.PoolBase - HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@316290e4 (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2026-07-18 21:31:24.012 [http-nio-9002-exec-7] WARN  com.zaxxer.hikari.pool.PoolBase - HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@7e46cf5b (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2026-07-18 21:31:24.013 [http-nio-9002-exec-7] WARN  com.zaxxer.hikari.pool.PoolBase - HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@6a0f162f (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2026-07-18 21:31:24.014 [http-nio-9002-exec-7] WARN  com.zaxxer.hikari.pool.PoolBase - HikariPool-1 - Failed to validate connection com.mysql.cj.jdbc.ConnectionImpl@3359f01f (No operations allowed after connection closed.). Possibly consider using a shorter maxLifetime value.
+2026-07-18 21:31:24.156 [http-nio-9002-exec-7] INFO  o.e.springdemo3.aspect.LogAspect - 执行耗时: 163ms
+2026-07-18 21:31:24.157 [http-nio-9002-exec-7] INFO  o.e.springdemo3.aspect.LogAspect - === 【操作日志】EmpController.getEmpPageList() 结束 ===
+2026-07-18 21:31:25.425 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=3h27m25s861ms782µs900ns).
+2026-07-18 21:31:26.423 [http-nio-9002-exec-8] INFO  o.e.s.config.LoginInterceptor - token 校验通过: username=zhangs
+2026-07-18 21:31:26.424 [http-nio-9002-exec-8] INFO  o.e.springdemo3.aspect.LogAspect - === 【操作日志】DeptController.list() 开始 ===
+2026-07-18 21:31:26.424 [http-nio-9002-exec-8] INFO  o.e.springdemo3.aspect.LogAspect - 请求参数: []
+2026-07-18 21:31:26.424 [http-nio-9002-exec-8] INFO  o.e.s.controller.DeptController - Request start: list departments
+2026-07-18 21:31:26.449 [http-nio-9002-exec-8] INFO  o.e.s.controller.DeptController - Request success: list departments, count=10
+2026-07-18 21:31:26.449 [http-nio-9002-exec-8] INFO  o.e.springdemo3.aspect.LogAspect - 执行耗时: 25ms
+2026-07-18 21:31:26.449 [http-nio-9002-exec-8] INFO  o.e.springdemo3.aspect.LogAspect - === 【操作日志】DeptController.list() 结束 ===
